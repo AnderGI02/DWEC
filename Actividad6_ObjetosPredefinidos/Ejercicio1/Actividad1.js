@@ -45,7 +45,7 @@ const takeOutWordAccent = (phrase) => {
     return word
       .split("")
       .map((char) => {
-        if (char in fromAccentToNoAccent) {
+        if (char.toLowerCase() in fromAccentToNoAccent) {
           return fromAccentToNoAccent[char];
         }
         return char;
