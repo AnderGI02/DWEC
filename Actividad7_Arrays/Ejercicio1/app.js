@@ -123,24 +123,45 @@ function Baraja() {
     return this.baraja.splice(0, num);
   };
 }
-
+const renderCardElement = (row, col) =>
+  `<div style="background: url('cartas.png') -${80 * col}px -${
+    123 * row
+  }px; width: 80px; height: 123px;"></div>`;
 function renderBaraja(array) {
   const baraja = document.querySelector("div#baraja");
-  let cardCount = 0;
+  baraja.style.cssText = `
+  display:grid;
+  grid-template-rows:repeat(4,1fr);
+  row-gap:0.75rem;
+  `;
+  let index = 0;
+  let row = 0;
   baraja.replaceChildren();
-  while (cardCount < array.length) {
-    const row = document.createElement("div");
-    row.classList.add("row");
-    let cardsInRow = 1;
-    while (cardCount < array.length && cardsInRow <= 6) {
-      const card = document.createElement("div");
-      card.classList.add("col", "col-2");
-      card.innerHTML = array[cardCount].toString();
-      row.append(card);
-      cardCount++;
-      cardsInRow++;
+  let rowEl;
+  while (row * 10 < array.length) {
+    rowEl = document.createElement("div");
+    rowEl.style.cssText = `
+    display:grid;
+    grid-template-columns:repeat(10,1fr);
+    column-gap:0.25rem;
+    `;
+    let col = 0;
+    while (row * 10 < array.length && col < 10) {
+      const card = array[index];
+      //["Oros", "Copas", "Espadas", "Bastos"]
+      const paloANum = {
+        Oros: 0,
+        Copas: 1,
+        Espadas: 2,
+        Bastos: 3,
+      };
+      const cardEl = renderCardElement(paloANum[card.palo], card.valor);
+      rowEl.innerHTML += cardEl;
+      col++;
+      index++;
     }
-    baraja.append(row);
+    baraja.append(rowEl);
+    row++;
   }
 }
 
