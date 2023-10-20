@@ -67,14 +67,16 @@ function addUserToSetAndVoteToMap({ usuario, voto }) {
       votos.set(voto, votosOpc);
     }
     renderDataInTable(tablaUsuariosBody, () => {
-      for (const [key, value] of users.entries()) {
+      for (const [key, value] of new Set([...users].sort()).entries()) {
         tablaUsuariosBody.innerHTML += `<tr>
         <th scope="col">${value}</th>
       </tr>`;
       }
     });
     renderDataInTable(tablaVotosBody, () => {
-      for (const [key, value] of votos.entries()) {
+      for (const [key, value] of new Map(
+        Array.from(votos).sort((a, b) => b[1] - a[1])
+      )) {
         tablaVotosBody.innerHTML += `<tr>
         <th scope="col">Opción ${key}</th>
         <th scope="col" >${value}</th>
